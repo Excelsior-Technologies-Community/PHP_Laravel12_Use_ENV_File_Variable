@@ -1,4 +1,4 @@
-# 🚀 Laravel 12 – ENV Variable Example  
+# PHP_Laravel12_Use_ENV_File_Variable
 
 
 <p align="center">
@@ -9,13 +9,13 @@
 
 ---
 
-## 📌 Overview  
+##  Overview  
 This project explains how to work with **custom .env variables**,  
 how to load them using **env()**, **config()**, and how to show them in Blade.
 
 ---
 
-## ⭐ Features  
+##  Features  
 - Custom ENV Variables  
 - Custom Config File  
 - env() Usage  
@@ -26,7 +26,7 @@ how to load them using **env()**, **config()**, and how to show them in Blade.
 
 ---
 
-## 📁 Folder Structure  
+##  Folder Structure  
 ```
 app/
 │── Http/
@@ -49,16 +49,16 @@ README.md
 
 ---
 
-# ✅ Step 1 — Install Laravel 12  
+#  Step 1 — Install Laravel 12  
 ```bash
 composer create-project laravel/laravel envdemo "12.*"
 ```
 
 ---
 
-# ✅ Step 2 — Database Configuration  
+#  Step 2 — Database Configuration  
 
-📄 **.env (required settings)**
+ **.env (required settings)**
 
 ```
 DB_CONNECTION=mysql
@@ -71,7 +71,7 @@ DB_PASSWORD=
 
 ---
 
-# ✅ Step 3 — Add Custom ENV Variables  
+#  Step 3 — Add Custom ENV Variables  
 Add these at the bottom of `.env`:
 
 ```
@@ -82,9 +82,9 @@ APP_VERSION=1.2.7
 
 ---
 
-# ✅ Step 4 — Create Custom Config File  
+#  Step 4 — Create Custom Config File  
 
-📄 **config/custom.php**
+ **config/custom.php**
 
 ```php
 <?php
@@ -102,9 +102,9 @@ php artisan config:clear
 
 ---
 
-# ⭐ Step 5 — Create Controller  
+#  Step 5 — Create Controller  
 
-📄 **app/Http/Controllers/EnvDemoController.php**
+ **app/Http/Controllers/EnvDemoController.php**
 
 ```php
 <?php
@@ -132,9 +132,9 @@ class EnvDemoController extends Controller
 
 ---
 
-# ⭐ Step 6 — Add Route  
+#  Step 6 — Add Route  
 
-📄 **routes/web.php**
+ **routes/web.php**
 
 ```php
 use App\Http\Controllers\EnvDemoController;
@@ -144,9 +144,9 @@ Route::get('/env-demo', [EnvDemoController::class, 'index']);
 
 ---
 
-# ⭐ Step 7 — Create Blade View  
+#  Step 7 — Create Blade View  
 
-📄 **resources/views/env-demo.blade.php**
+ **resources/views/env-demo.blade.php**
 
 ```blade
 <!DOCTYPE html>
@@ -185,7 +185,7 @@ Route::get('/env-demo', [EnvDemoController::class, 'index']);
 
 ---
 
-# ▶ Run Laravel Server  
+#  Run Laravel Server  
 ```bash
 php artisan serve
 ```
@@ -198,6 +198,6 @@ http://localhost:8000/env-demo
 
 ---
 
-# 🧡 ScreenShot
+#  ScreenShot
 
 <img width="1392" height="357" alt="Screenshot 2025-12-08 135011" src="https://github.com/user-attachments/assets/ce1bbee6-d318-49d3-a238-62ab2264f7df" />
