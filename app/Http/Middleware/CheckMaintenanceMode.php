@@ -9,7 +9,7 @@ class CheckMaintenanceMode
 {
     public function handle(Request $request, Closure $next)
     {
-        if (config('custom.maintenance.enabled') == true) {
+        if (config('custom.maintenance.enabled') === true) {
             return response()->view('maintenance', [
                 'message' => config('custom.maintenance.message'),
             ], 503);
