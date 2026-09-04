@@ -7,18 +7,15 @@
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+        content="width=device-width, initial-scale=1.0">
 
     <title>Configuration Dashboard | Laravel 12</title>
 
     <link
         rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-    >
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 
     <style>
-
         body {
             background: #f4f6f9;
         }
@@ -60,52 +57,49 @@
         .dot-danger {
             background: #dc3545;
         }
-
     </style>
 
 </head>
 
 <body>
 
-<div class="container py-5">
+    <div class="container py-5">
 
-    {{-- Header --}}
-    <div class="d-flex justify-content-between align-items-center mb-4">
+        {{-- Header --}}
+        <div class="d-flex justify-content-between align-items-center mb-4">
 
-        <div>
-            <h2 class="fw-bold mb-1">
-                📊 Configuration Dashboard
-            </h2>
+            <div>
+                <h2 class="fw-bold mb-1">
+                    📊 Configuration Dashboard
+                </h2>
 
-            <p class="text-muted mb-0">
-                Monitor Laravel ENV and configuration values.
-            </p>
+                <p class="text-muted mb-0">
+                    Monitor Laravel ENV and configuration values.
+                </p>
+            </div>
+
+            <div class="d-flex gap-2">
+
+                <a
+                    href="{{ route('env.demo') }}"
+                    class="btn btn-outline-secondary">
+                    ← ENV Demo
+                </a>
+
+                <a
+                    href="{{ route('config.health') }}"
+                    class="btn btn-outline-primary">
+                    🛡️ Health Check
+                </a>
+
+            </div>
+
         </div>
 
-        <div class="d-flex gap-2">
 
-            <a
-                href="{{ route('env.demo') }}"
-                class="btn btn-outline-secondary"
-            >
-                ← ENV Demo
-            </a>
+        {{-- Flash Messages --}}
 
-            <a
-                href="{{ route('config.health') }}"
-                class="btn btn-outline-primary"
-            >
-                🛡️ Health Check
-            </a>
-
-        </div>
-
-    </div>
-
-
-    {{-- Flash Messages --}}
-
-    @if(session('success'))
+        @if(session('success'))
 
         <div class="alert alert-success alert-dismissible fade show">
 
@@ -114,15 +108,14 @@
             <button
                 type="button"
                 class="btn-close"
-                data-bs-dismiss="alert"
-            ></button>
+                data-bs-dismiss="alert"></button>
 
         </div>
 
-    @endif
+        @endif
 
 
-    @if(session('error'))
+        @if(session('error'))
 
         <div class="alert alert-danger alert-dismissible fade show">
 
@@ -131,86 +124,112 @@
             <button
                 type="button"
                 class="btn-close"
-                data-bs-dismiss="alert"
-            ></button>
+                data-bs-dismiss="alert"></button>
 
         </div>
 
-    @endif
+        @endif
 
 
-    {{-- Environment Summary --}}
+        {{-- Environment Summary --}}
 
-    <div class="row g-4 mb-4">
+        <div class="row g-4 mb-4">
 
-        <div class="col-md-4">
+            <div class="col-md-4">
 
-            <div class="card dashboard-card shadow-sm h-100">
+                <div class="card dashboard-card shadow-sm h-100">
 
-                <div class="card-body">
+                    <div class="card-body">
 
-                    <small class="text-muted">
-                        CURRENT ENVIRONMENT
-                    </small>
+                        <small class="text-muted">
+                            CURRENT ENVIRONMENT
+                        </small>
 
-                    <h3 class="mt-2 mb-0">
+                        <h3 class="mt-2 mb-0">
 
-                        @if($currentEnv === 'production')
+                            @if($currentEnv === 'production')
 
                             <span class="badge bg-danger">
                                 🔴 Production
                             </span>
 
-                        @elseif($currentEnv === 'staging')
+                            @elseif($currentEnv === 'staging')
 
                             <span class="badge bg-warning text-dark">
                                 🟡 Staging
                             </span>
 
-                        @else
+                            @else
 
                             <span class="badge bg-success">
                                 🟢 {{ ucfirst($currentEnv) }}
                             </span>
 
-                        @endif
+                            @endif
 
-                    </h3>
+                        </h3>
+
+                    </div>
 
                 </div>
 
             </div>
 
-        </div>
 
+            <div class="col-md-4">
 
-        <div class="col-md-4">
+                <div class="card dashboard-card shadow-sm h-100">
 
-            <div class="card dashboard-card shadow-sm h-100">
+                    <div class="card-body">
 
-                <div class="card-body">
+                        <small class="text-muted">
+                            CONFIGURATION CACHE
+                        </small>
 
-                    <small class="text-muted">
-                        CONFIGURATION CACHE
-                    </small>
+                        <h3 class="mt-2">
 
-                    <h3 class="mt-2">
-
-                        @if($isCached)
+                            @if($isCached)
 
                             <span class="text-success">
                                 ✅ Cached
                             </span>
 
-                        @else
+                            @else
 
                             <span class="text-warning">
                                 ⚠️ Not Cached
                             </span>
 
-                        @endif
+                            @endif
 
-                    </h3>
+                        </h3>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="card dashboard-card shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <small class="text-muted">
+                            CONFIG SOURCE
+                        </small>
+
+                        <h3 class="mt-2">
+
+                            <span class="badge bg-info">
+                                .env → config()
+                            </span>
+
+                        </h3>
+
+                    </div>
 
                 </div>
 
@@ -219,73 +238,46 @@
         </div>
 
 
-        <div class="col-md-4">
+        {{-- Refresh Configuration --}}
 
-            <div class="card dashboard-card shadow-sm h-100">
+        <div class="card dashboard-card shadow-sm mb-4">
 
-                <div class="card-body">
+            <div class="card-body">
 
-                    <small class="text-muted">
-                        CONFIG SOURCE
-                    </small>
+                <div class="row align-items-center">
 
-                    <h3 class="mt-2">
+                    <div class="col-md-8">
 
-                        <span class="badge bg-info">
-                            .env → config()
-                        </span>
+                        <h5 class="fw-bold">
+                            🔄 Refresh Configuration
+                        </h5>
 
-                    </h3>
+                        <p class="text-muted mb-0">
+                            Clear the existing Laravel configuration cache
+                            and rebuild it using the current environment values.
+                        </p>
 
-                </div>
+                    </div>
 
-            </div>
+                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
 
-        </div>
+                        <form
+                            action="{{ route('config.refresh') }}"
+                            method="POST"
+                            id="refreshConfigForm">
 
-    </div>
+                            @csrf
 
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                                id="refreshConfigButton">
+                                🔄 Refresh & Cache
+                            </button>
 
-    {{-- Refresh Configuration --}}
+                        </form>
 
-    <div class="card dashboard-card shadow-sm mb-4">
-
-        <div class="card-body">
-
-            <div class="row align-items-center">
-
-                <div class="col-md-8">
-
-                    <h5 class="fw-bold">
-                        🔄 Refresh Configuration
-                    </h5>
-
-                    <p class="text-muted mb-0">
-                        Clear the existing Laravel configuration cache
-                        and rebuild it using the current environment values.
-                    </p>
-
-                </div>
-
-                <div class="col-md-4 text-md-end mt-3 mt-md-0">
-
-                    <form
-                        action="{{ route('config.refresh') }}"
-                        method="POST"
-                        id="refreshConfigForm"
-                    >
-
-                        @csrf
-
-                        <button
-                            type="submit"
-                            class="btn btn-primary"
-                            id="refreshConfigButton"
-                        >
-                            🔄 Refresh & Cache
-                        </button>
-
-                    </form>
+                    </div>
 
                 </div>
 
@@ -293,12 +285,10 @@
 
         </div>
 
-    </div>
 
+        {{-- Configuration Sections --}}
 
-    {{-- Configuration Sections --}}
-
-    @foreach($configuration as $section => $variables)
+        @foreach($configuration as $section => $variables)
 
         <div class="card dashboard-card shadow-sm mb-4">
 
@@ -318,31 +308,31 @@
 
                         <thead>
 
-                        <tr>
+                            <tr>
 
-                            <th>
-                                ENV Variable
-                            </th>
+                                <th>
+                                    ENV Variable
+                                </th>
 
-                            <th>
-                                Value
-                            </th>
+                                <th>
+                                    Value
+                                </th>
 
-                            <th>
-                                Source
-                            </th>
+                                <th>
+                                    Source
+                                </th>
 
-                            <th>
-                                Type
-                            </th>
+                                <th>
+                                    Type
+                                </th>
 
-                        </tr>
+                            </tr>
 
                         </thead>
 
                         <tbody>
 
-                        @foreach($variables as $key => $item)
+                            @foreach($variables as $key => $item)
 
                             <tr>
 
@@ -356,44 +346,43 @@
 
                                     @if($item['type'] === 'boolean')
 
-                                        @if($item['value'])
+                                    @if($item['value'])
 
-                                            <span class="badge bg-success">
-                                                Enabled
-                                            </span>
-
-                                        @else
-
-                                            <span class="badge bg-secondary">
-                                                Disabled
-                                            </span>
-
-                                        @endif
-
-                                    @elseif($item['type'] === 'color')
-
-                                        <span
-                                            class="badge"
-                                            style="
-                                                background-color:
-                                                {{ $item['value'] }};
-                                                font-size: 0.9rem;
-                                            "
-                                        >
-                                            {{ $item['value'] }}
-                                        </span>
-
-                                    @elseif($item['type'] === 'secret')
-
-                                        <code class="text-danger">
-                                            🔒 {{ $item['value'] }}
-                                        </code>
+                                    <span class="badge bg-success">
+                                        Enabled
+                                    </span>
 
                                     @else
 
-                                        <span class="config-value">
-                                            {{ $item['value'] }}
-                                        </span>
+                                    <span class="badge bg-secondary">
+                                        Disabled
+                                    </span>
+
+                                    @endif
+
+                                    @elseif($item['type'] === 'color')
+
+                                    <span
+                                        class="badge"
+                                        style="
+                                                background-color:
+                                                {{ $item['value'] }};
+                                                font-size: 0.9rem;
+                                            ">
+                                        {{ $item['value'] }}
+                                    </span>
+
+                                    @elseif($item['type'] === 'secret')
+
+                                    <code class="text-danger">
+                                        🔒 {{ $item['value'] }}
+                                    </code>
+
+                                    @else
+
+                                    <span class="config-value">
+                                        {{ $item['value'] }}
+                                    </span>
 
                                     @endif
 
@@ -411,34 +400,34 @@
 
                                     @switch($item['type'])
 
-                                        @case('boolean')
-                                            <span class="badge bg-secondary">
-                                                Boolean
-                                            </span>
-                                            @break
+                                    @case('boolean')
+                                    <span class="badge bg-secondary">
+                                        Boolean
+                                    </span>
+                                    @break
 
-                                        @case('secret')
-                                            <span class="badge bg-danger">
-                                                Sensitive
-                                            </span>
-                                            @break
+                                    @case('secret')
+                                    <span class="badge bg-danger">
+                                        Sensitive
+                                    </span>
+                                    @break
 
-                                        @case('color')
-                                            <span class="badge bg-primary">
-                                                Color
-                                            </span>
-                                            @break
+                                    @case('color')
+                                    <span class="badge bg-primary">
+                                        Color
+                                    </span>
+                                    @break
 
-                                        @case('environment')
-                                            <span class="badge bg-warning text-dark">
-                                                Environment
-                                            </span>
-                                            @break
+                                    @case('environment')
+                                    <span class="badge bg-warning text-dark">
+                                        Environment
+                                    </span>
+                                    @break
 
-                                        @default
-                                            <span class="badge bg-light text-dark">
-                                                Text
-                                            </span>
+                                    @default
+                                    <span class="badge bg-light text-dark">
+                                        Text
+                                    </span>
 
                                     @endswitch
 
@@ -446,7 +435,7 @@
 
                             </tr>
 
-                        @endforeach
+                            @endforeach
 
                         </tbody>
 
@@ -458,64 +447,137 @@
 
         </div>
 
-    @endforeach
+        @endforeach
 
 
-    {{-- Bottom Navigation --}}
+        {{-- Bottom Navigation --}}
 
-    <div class="d-flex justify-content-center gap-2">
+        {{-- Advanced Configuration Navigation --}}
 
-        <a
-            href="{{ route('env.export') }}"
-            class="btn btn-dark"
-        >
-            📤 ENV Export
-        </a>
+        <div class="card dashboard-card shadow-sm mt-4">
 
-        <a
-            href="{{ route('cache.demo') }}"
-            class="btn btn-outline-secondary"
-        >
-            ⚡ Cache Demo
-        </a>
+            <div class="card-body">
 
-        <a
-            href="{{ route('config.health') }}"
-            class="btn btn-outline-primary"
-        >
-            🛡️ Configuration Health
-        </a>
+                <h5 class="fw-bold mb-3">
+                    🚀 Advanced Configuration Tools
+                </h5>
+
+                <div class="d-flex gap-2 flex-wrap">
+
+                    <a
+                        href="{{ route('config.stats') }}"
+                        class="btn btn-outline-primary">
+                        📊 Statistics
+                    </a>
+
+                    <a
+                        href="{{ route('config.search') }}"
+                        class="btn btn-outline-dark">
+                        🔎 Search
+                    </a>
+
+                    <a
+                        href="{{ route('system.info') }}"
+                        class="btn btn-outline-secondary">
+                        💻 System Info
+                    </a>
+
+                    <a
+                        href="{{ route('database.health') }}"
+                        class="btn btn-outline-success">
+                        🗄️ Database Health
+                    </a>
+
+                    <a
+                        href="{{ route('storage.health') }}"
+                        class="btn btn-outline-warning">
+                        📁 Storage Health
+                    </a>
+
+                    <a
+                        href="{{ route('security.check') }}"
+                        class="btn btn-outline-danger">
+                        🔐 Security Check
+                    </a>
+
+                    <a
+                        href="{{ route('config.snapshot') }}"
+                        class="btn btn-outline-info">
+                        📸 Snapshot
+                    </a>
+
+                    <a
+                        href="{{ route('config.export.json') }}"
+                        class="btn btn-dark">
+                        📄 JSON Export
+                    </a>
+
+                    <a
+                        href="{{ route('config.export.csv') }}"
+                        class="btn btn-secondary">
+                        📊 CSV Export
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {{-- Existing Navigation --}}
+
+        <div class="d-flex justify-content-center gap-2 mt-4 flex-wrap">
+
+            <a
+                href="{{ route('env.export') }}"
+                class="btn btn-dark">
+                📤 ENV Export
+            </a>
+
+            <a
+                href="{{ route('cache.demo') }}"
+                class="btn btn-outline-secondary">
+                ⚡ Cache Demo
+            </a>
+
+            <a
+                href="{{ route('config.health') }}"
+                class="btn btn-outline-primary">
+                🛡️ Configuration Health
+            </a>
+
+        </div>
 
     </div>
 
-</div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document
+            .getElementById('refreshConfigForm')
+            ?.addEventListener('submit', function(event) {
 
-<script>
-document
-    .getElementById('refreshConfigForm')
-    ?.addEventListener('submit', function (event) {
+                const button = document.getElementById(
+                    'refreshConfigButton'
+                );
 
-        const button = document.getElementById(
-            'refreshConfigButton'
-        );
+                const confirmed = confirm(
+                    'Refresh Laravel configuration cache using the current ENV values?'
+                );
 
-        const confirmed = confirm(
-            'Refresh Laravel configuration cache using the current ENV values?'
-        );
+                if (!confirmed) {
+                    event.preventDefault();
+                    return;
+                }
 
-        if (!confirmed) {
-            event.preventDefault();
-            return;
-        }
+                button.disabled = true;
 
-        button.disabled = true;
-
-        button.innerHTML = '⏳ Refreshing...';
-    });
-</script>
+                button.innerHTML = '⏳ Refreshing...';
+            });
+    </script>
 
 </body>
+
 </html>
