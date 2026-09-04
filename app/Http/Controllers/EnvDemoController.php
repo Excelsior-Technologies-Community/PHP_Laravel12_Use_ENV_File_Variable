@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class EnvDemoController extends Controller
 {
     /**
-     * Feature 1-6:
+     * ================================================================
+     * Feature 1-6
      * Main ENV Demo
+     * ================================================================
      */
     public function index()
     {
@@ -43,8 +48,10 @@ class EnvDemoController extends Controller
     }
 
     /**
-     * Feature 7:
+     * ================================================================
+     * Feature 7
      * ENV Export Page
+     * ================================================================
      */
     public function exportEnv()
     {
@@ -65,24 +72,24 @@ class EnvDemoController extends Controller
             'SUPPORT_NUMBER' => config('custom.support_number'),
 
             'FEATURE_DARK_MODE' =>
-                config('custom.features.dark_mode')
-                    ? 'Enabled'
-                    : 'Disabled',
+            config('custom.features.dark_mode')
+                ? 'Enabled'
+                : 'Disabled',
 
             'FEATURE_ANALYTICS' =>
-                config('custom.features.analytics')
-                    ? 'Enabled'
-                    : 'Disabled',
+            config('custom.features.analytics')
+                ? 'Enabled'
+                : 'Disabled',
 
             'FEATURE_CHAT' =>
-                config('custom.features.chat')
-                    ? 'Enabled'
-                    : 'Disabled',
+            config('custom.features.chat')
+                ? 'Enabled'
+                : 'Disabled',
 
             'MAINTENANCE_MODE' =>
-                config('custom.maintenance.enabled')
-                    ? 'Enabled'
-                    : 'Disabled',
+            config('custom.maintenance.enabled')
+                ? 'Enabled'
+                : 'Disabled',
 
             'APP_THEME_COLOR' => config('custom.theme.color'),
             'APP_THEME_NAME' => config('custom.theme.name'),
@@ -95,8 +102,10 @@ class EnvDemoController extends Controller
     }
 
     /**
-     * Feature 8:
+     * ================================================================
+     * Feature 8
      * Configuration Cache Demo
+     * ================================================================
      */
     public function cacheDemo()
     {
@@ -113,59 +122,30 @@ class EnvDemoController extends Controller
     }
 
     /**
-     * Feature 9:
+     * ================================================================
+     * Feature 9
      * Runtime Configuration Refresh
+     * ================================================================
      */
     public function refreshConfig()
     {
         try {
-            /*
-            |--------------------------------------------------------------------------
-            | Step 1: Clear configuration cache
-            |--------------------------------------------------------------------------
-            */
-
             Artisan::call('config:clear');
-
-            /*
-            |--------------------------------------------------------------------------
-            | Step 2: Clear application cache
-            |--------------------------------------------------------------------------
-            */
 
             Artisan::call('cache:clear');
 
-            /*
-            |--------------------------------------------------------------------------
-            | Step 3: Rebuild configuration cache
-            |--------------------------------------------------------------------------
-            */
-
             Artisan::call('config:cache');
 
-            /*
-            |--------------------------------------------------------------------------
-            | Step 4: Get current environment
-            |--------------------------------------------------------------------------
-            */
-
             $currentEnv = app()->environment();
-
-            /*
-            |--------------------------------------------------------------------------
-            | Step 5: Redirect back to dashboard
-            |--------------------------------------------------------------------------
-            */
 
             return redirect()
                 ->route('config.dashboard')
                 ->with(
                     'success',
                     'Configuration cache refreshed successfully for '
-                    . ucfirst($currentEnv)
-                    . ' environment.'
+                        . ucfirst($currentEnv)
+                        . ' environment.'
                 );
-
         } catch (\Throwable $e) {
 
             return redirect()
@@ -173,14 +153,16 @@ class EnvDemoController extends Controller
                 ->with(
                     'error',
                     'Configuration refresh failed: '
-                    . $e->getMessage()
+                        . $e->getMessage()
                 );
         }
     }
 
     /**
-     * Feature 10:
+     * ================================================================
+     * Feature 10
      * Configuration Dashboard
+     * ================================================================
      */
     public function configDashboard()
     {
@@ -193,12 +175,6 @@ class EnvDemoController extends Controller
         $features = config('custom.features', []);
 
         $configuration = [
-
-            /*
-            |--------------------------------------------------------------------------
-            | Application
-            |--------------------------------------------------------------------------
-            */
 
             'Application' => [
 
@@ -224,12 +200,6 @@ class EnvDemoController extends Controller
                 ],
             ],
 
-            /*
-            |--------------------------------------------------------------------------
-            | Contact
-            |--------------------------------------------------------------------------
-            */
-
             'Contact' => [
 
                 'ADMIN_EMAIL' => [
@@ -246,12 +216,6 @@ class EnvDemoController extends Controller
                     'sensitive' => false,
                 ],
             ],
-
-            /*
-            |--------------------------------------------------------------------------
-            | Feature Flags
-            |--------------------------------------------------------------------------
-            */
 
             'Feature Flags' => [
 
@@ -277,12 +241,6 @@ class EnvDemoController extends Controller
                 ],
             ],
 
-            /*
-            |--------------------------------------------------------------------------
-            | Theme
-            |--------------------------------------------------------------------------
-            */
-
             'Theme' => [
 
                 'APP_THEME_COLOR' => [
@@ -300,12 +258,6 @@ class EnvDemoController extends Controller
                 ],
             ],
 
-            /*
-            |--------------------------------------------------------------------------
-            | Maintenance
-            |--------------------------------------------------------------------------
-            */
-
             'Maintenance' => [
 
                 'MAINTENANCE_MODE' => [
@@ -322,12 +274,6 @@ class EnvDemoController extends Controller
                     'sensitive' => false,
                 ],
             ],
-
-            /*
-            |--------------------------------------------------------------------------
-            | Security
-            |--------------------------------------------------------------------------
-            */
 
             'Security' => [
 
@@ -362,18 +308,14 @@ class EnvDemoController extends Controller
     }
 
     /**
-     * Feature 11:
+     * ================================================================
+     * Feature 11
      * ENV Configuration Health Check
+     * ================================================================
      */
     public function configHealth()
     {
         $checks = [];
-
-        /*
-        |--------------------------------------------------------------------------
-        | 1. Required Configuration Variables
-        |--------------------------------------------------------------------------
-        */
 
         $requiredVariables = [
 
@@ -406,7 +348,6 @@ class EnvDemoController extends Controller
                     'status' => 'error',
                     'message' => 'Variable is missing or empty.',
                 ];
-
             } else {
 
                 $checks[] = [
@@ -417,12 +358,6 @@ class EnvDemoController extends Controller
                 ];
             }
         }
-
-        /*
-        |--------------------------------------------------------------------------
-        | 2. Boolean Configuration Variables
-        |--------------------------------------------------------------------------
-        */
 
         $booleanVariables = [
 
@@ -455,12 +390,6 @@ class EnvDemoController extends Controller
             ];
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | 3. Theme Color Validation
-        |--------------------------------------------------------------------------
-        */
-
         $themeColor = config(
             'custom.theme.color'
         );
@@ -479,7 +408,6 @@ class EnvDemoController extends Controller
                 'status' => 'success',
                 'message' => 'Valid hexadecimal color.',
             ];
-
         } else {
 
             $checks[] = [
@@ -489,12 +417,6 @@ class EnvDemoController extends Controller
                 'message' => 'Invalid hexadecimal color format.',
             ];
         }
-
-        /*
-        |--------------------------------------------------------------------------
-        | 4. Application Version Validation
-        |--------------------------------------------------------------------------
-        */
 
         $version = config(
             'custom.app_version'
@@ -514,7 +436,6 @@ class EnvDemoController extends Controller
                 'status' => 'success',
                 'message' => 'Valid version format.',
             ];
-
         } else {
 
             $checks[] = [
@@ -522,15 +443,9 @@ class EnvDemoController extends Controller
                 'category' => 'Application',
                 'status' => 'warning',
                 'message' =>
-                    'Version should follow format such as 1.2.7.',
+                'Version should follow format such as 1.2.7.',
             ];
         }
-
-        /*
-        |--------------------------------------------------------------------------
-        | 5. API Credentials
-        |--------------------------------------------------------------------------
-        */
 
         $apiKey = config(
             'custom.api_key',
@@ -542,10 +457,6 @@ class EnvDemoController extends Controller
             ''
         );
 
-        /*
-        | API Key
-        */
-
         if (!empty($apiKey)) {
 
             $checks[] = [
@@ -554,7 +465,6 @@ class EnvDemoController extends Controller
                 'status' => 'success',
                 'message' => 'API key is configured.',
             ];
-
         } else {
 
             $checks[] = [
@@ -565,10 +475,6 @@ class EnvDemoController extends Controller
             ];
         }
 
-        /*
-        | API Secret
-        */
-
         if (!empty($apiSecret)) {
 
             $checks[] = [
@@ -577,7 +483,6 @@ class EnvDemoController extends Controller
                 'status' => 'success',
                 'message' => 'API secret is configured.',
             ];
-
         } else {
 
             $checks[] = [
@@ -587,12 +492,6 @@ class EnvDemoController extends Controller
                 'message' => 'API secret is not configured.',
             ];
         }
-
-        /*
-        |--------------------------------------------------------------------------
-        | 6. Application Environment
-        |--------------------------------------------------------------------------
-        */
 
         $currentEnv = app()->environment();
 
@@ -615,9 +514,8 @@ class EnvDemoController extends Controller
                 'category' => 'Environment',
                 'status' => 'success',
                 'message' =>
-                    "Running in {$currentEnv} environment.",
+                "Running in {$currentEnv} environment.",
             ];
-
         } else {
 
             $checks[] = [
@@ -625,15 +523,9 @@ class EnvDemoController extends Controller
                 'category' => 'Environment',
                 'status' => 'warning',
                 'message' =>
-                    "Unknown environment: {$currentEnv}.",
+                "Unknown environment: {$currentEnv}.",
             ];
         }
-
-        /*
-        |--------------------------------------------------------------------------
-        | Summary
-        |--------------------------------------------------------------------------
-        */
 
         $totalChecks = count($checks);
 
@@ -649,20 +541,12 @@ class EnvDemoController extends Controller
             ->where('status', 'error')
             ->count();
 
-        /*
-        |--------------------------------------------------------------------------
-        | Overall Status
-        |--------------------------------------------------------------------------
-        */
-
         if ($errorCount > 0) {
 
             $overallStatus = 'error';
-
         } elseif ($warningCount > 0) {
 
             $overallStatus = 'warning';
-
         } else {
 
             $overallStatus = 'success';
@@ -680,6 +564,545 @@ class EnvDemoController extends Controller
                 'currentEnv'
             )
         );
+    }
+
+    /**
+     * ================================================================
+     * Feature 12
+     * Configuration Statistics
+     * ================================================================
+     */
+    public function configStats()
+    {
+        $features = config('custom.features', []);
+
+        $statistics = [
+            'total_features' => count($features),
+            'enabled_features' => collect($features)
+                ->filter(fn($value) => $value === true)
+                ->count(),
+            'disabled_features' => collect($features)
+                ->filter(fn($value) => $value === false)
+                ->count(),
+
+            'maintenance' =>
+            config('custom.maintenance.enabled')
+                ? 'Enabled'
+                : 'Disabled',
+
+            'api_key' =>
+            !empty(config('custom.api_key'))
+                ? 'Configured'
+                : 'Missing',
+
+            'api_secret' =>
+            !empty(config('custom.api_secret'))
+                ? 'Configured'
+                : 'Missing',
+
+            'configuration_cached' =>
+            file_exists(
+                base_path('bootstrap/cache/config.php')
+            ),
+        ];
+
+        return view(
+            'config-stats',
+            compact('statistics')
+        );
+    }
+
+    /**
+     * ================================================================
+     * Feature 13
+     * Configuration Search
+     * ================================================================
+     */
+    public function configSearch(Request $request)
+    {
+        $search = trim(
+            $request->get('search', '')
+        );
+
+        $configuration = [
+
+            'APP_NAME' => config('app.name'),
+
+            'APP_ENV' => config('app.env'),
+
+            'APP_VERSION' => config(
+                'custom.app_version'
+            ),
+
+            'ADMIN_EMAIL' => config(
+                'custom.admin_email'
+            ),
+
+            'SUPPORT_NUMBER' => config(
+                'custom.support_number'
+            ),
+
+            'FEATURE_DARK_MODE' =>
+            config('custom.features.dark_mode')
+                ? 'Enabled'
+                : 'Disabled',
+
+            'FEATURE_ANALYTICS' =>
+            config('custom.features.analytics')
+                ? 'Enabled'
+                : 'Disabled',
+
+            'FEATURE_CHAT' =>
+            config('custom.features.chat')
+                ? 'Enabled'
+                : 'Disabled',
+
+            'MAINTENANCE_MODE' =>
+            config('custom.maintenance.enabled')
+                ? 'Enabled'
+                : 'Disabled',
+
+            'APP_THEME_COLOR' => config(
+                'custom.theme.color'
+            ),
+
+            'APP_THEME_NAME' => config(
+                'custom.theme.name'
+            ),
+
+            'API_KEY' => $this->maskSecret(
+                config('custom.api_key', '')
+            ),
+
+            'API_SECRET' => $this->maskSecret(
+                config('custom.api_secret', '')
+            ),
+        ];
+
+        if ($search !== '') {
+
+            $configuration = collect($configuration)
+                ->filter(function ($value, $key) use ($search) {
+
+                    return str_contains(
+                        strtolower($key),
+                        strtolower($search)
+                    );
+                })
+                ->toArray();
+        }
+
+        return view(
+            'config-search',
+            compact(
+                'configuration',
+                'search'
+            )
+        );
+    }
+
+    /**
+     * ================================================================
+     * Feature 14
+     * JSON Export
+     * ================================================================
+     */
+    public function exportJson()
+    {
+        $data = $this->getSafeExportData();
+
+        return response()->json(
+            $data,
+            200,
+            [
+                'Content-Disposition' =>
+                'attachment; filename="env-config.json"',
+            ]
+        );
+    }
+
+    /**
+     * ================================================================
+     * Feature 15
+     * CSV Export
+     * ================================================================
+     */
+    public function exportCsv()
+    {
+        $data = $this->getSafeExportData();
+
+        return response()->streamDownload(function () use ($data) {
+
+            $handle = fopen('php://output', 'w');
+
+            fputcsv(
+                $handle,
+                ['Variable', 'Value']
+            );
+
+            foreach ($data as $key => $value) {
+
+                fputcsv(
+                    $handle,
+                    [$key, $value]
+                );
+            }
+
+            fclose($handle);
+        }, 'env-config.csv', [
+            'Content-Type' => 'text/csv',
+        ]);
+    }
+
+    /**
+     * ================================================================
+     * Feature 16
+     * System Information
+     * ================================================================
+     */
+    public function systemInfo()
+    {
+        $information = [
+
+            'Laravel Version' => app()->version(),
+
+            'PHP Version' => PHP_VERSION,
+
+            'Environment' => app()->environment(),
+
+            'Application Name' => config('app.name'),
+
+            'Application URL' => config('app.url'),
+
+            'Timezone' => config('app.timezone'),
+
+            'Locale' => config('app.locale'),
+
+            'Debug Mode' =>
+            config('app.debug')
+                ? 'Enabled'
+                : 'Disabled',
+
+            'Operating System' => PHP_OS,
+
+            'Server Software' =>
+            $_SERVER['SERVER_SOFTWARE']
+                ?? 'Unknown',
+
+            'Configuration Cache' =>
+            file_exists(
+                base_path('bootstrap/cache/config.php')
+            )
+                ? 'Enabled'
+                : 'Disabled',
+        ];
+
+        return view(
+            'system-info',
+            compact('information')
+        );
+    }
+
+    /**
+     * ================================================================
+     * Feature 17
+     * Database Health Check
+     * ================================================================
+     */
+    public function databaseHealth()
+    {
+        $status = 'success';
+
+        $message = 'Database connection is working.';
+
+        $connection = config(
+            'database.default'
+        );
+
+        try {
+
+            DB::connection()->getPdo();
+        } catch (\Throwable $e) {
+
+            $status = 'error';
+
+            $message = 'Database connection failed.';
+        }
+
+        return view(
+            'database-health',
+            compact(
+                'status',
+                'message',
+                'connection'
+            )
+        );
+    }
+
+    /**
+     * ================================================================
+     * Feature 18
+     * Storage Health Check
+     * ================================================================
+     */
+    public function storageHealth()
+    {
+        $paths = [
+
+            'Storage Directory' =>
+            storage_path(),
+
+            'Storage App Directory' =>
+            storage_path('app'),
+
+            'Storage Logs Directory' =>
+            storage_path('logs'),
+
+            'Bootstrap Cache Directory' =>
+            base_path('bootstrap/cache'),
+
+            'Public Directory' =>
+            public_path(),
+        ];
+
+        $checks = [];
+
+        foreach ($paths as $name => $path) {
+
+            $exists = File::exists($path);
+
+            $writable = $exists
+                ? is_writable($path)
+                : false;
+
+            $checks[] = [
+
+                'name' => $name,
+
+                'path' => $path,
+
+                'exists' => $exists,
+
+                'writable' => $writable,
+            ];
+        }
+
+        return view(
+            'storage-health',
+            compact('checks')
+        );
+    }
+
+    /**
+     * ================================================================
+     * Feature 19
+     * ENV Security Check
+     * ================================================================
+     */
+    public function securityCheck()
+    {
+        $checks = [];
+
+        $envPath = base_path('.env');
+
+        $checks[] = [
+
+            'name' => '.env File Exists',
+
+            'status' => file_exists($envPath)
+                ? 'success'
+                : 'warning',
+
+            'message' => file_exists($envPath)
+                ? '.env file exists.'
+                : '.env file was not found.',
+        ];
+
+        $checks[] = [
+
+            'name' => 'APP_DEBUG',
+
+            'status' => config('app.debug')
+                ? 'warning'
+                : 'success',
+
+            'message' => config('app.debug')
+                ? 'Debug mode is enabled.'
+                : 'Debug mode is disabled.',
+        ];
+
+        $checks[] = [
+
+            'name' => 'APP_KEY',
+
+            'status' => !empty(config('app.key'))
+                ? 'success'
+                : 'error',
+
+            'message' => !empty(config('app.key'))
+                ? 'Application key is configured.'
+                : 'Application key is missing.',
+        ];
+
+        $checks[] = [
+
+            'name' => 'API_KEY',
+
+            'status' => !empty(config('custom.api_key'))
+                ? 'success'
+                : 'warning',
+
+            'message' => !empty(config('custom.api_key'))
+                ? 'API key is configured.'
+                : 'API key is missing.',
+        ];
+
+        $checks[] = [
+
+            'name' => 'API_SECRET',
+
+            'status' => !empty(config('custom.api_secret'))
+                ? 'success'
+                : 'warning',
+
+            'message' => !empty(config('custom.api_secret'))
+                ? 'API secret is configured.'
+                : 'API secret is missing.',
+        ];
+
+        return view(
+            'security-check',
+            compact('checks')
+        );
+    }
+
+    /**
+     * ================================================================
+     * Feature 20
+     * Configuration Snapshot
+     * ================================================================
+     */
+    public function snapshot()
+    {
+        $snapshot = [
+
+            'generated_at' => now()->format(
+                'Y-m-d H:i:s'
+            ),
+
+            'environment' => app()->environment(),
+
+            'application' => [
+
+                'name' => config('app.name'),
+
+                'version' => config(
+                    'custom.app_version'
+                ),
+
+                'url' => config('app.url'),
+
+            ],
+
+            'features' => config(
+                'custom.features',
+                []
+            ),
+
+            'theme' => [
+
+                'name' => config(
+                    'custom.theme.name'
+                ),
+
+                'color' => config(
+                    'custom.theme.color'
+                ),
+
+            ],
+
+            'maintenance' => [
+
+                'enabled' => config(
+                    'custom.maintenance.enabled'
+                ),
+
+                'message' => config(
+                    'custom.maintenance.message'
+                ),
+
+            ],
+
+            'cache' => [
+
+                'configuration_cached' =>
+                file_exists(
+                    base_path(
+                        'bootstrap/cache/config.php'
+                    )
+                ),
+            ],
+        ];
+
+        return view(
+            'config-snapshot',
+            compact('snapshot')
+        );
+    }
+
+    /**
+     * ================================================================
+     * Safe Export Data
+     * ================================================================
+     */
+    private function getSafeExportData(): array
+    {
+        return [
+
+            'APP_NAME' => config('app.name'),
+
+            'APP_ENV' => config('app.env'),
+
+            'APP_VERSION' => config(
+                'custom.app_version'
+            ),
+
+            'ADMIN_EMAIL' => config(
+                'custom.admin_email'
+            ),
+
+            'SUPPORT_NUMBER' => config(
+                'custom.support_number'
+            ),
+
+            'FEATURE_DARK_MODE' =>
+            config('custom.features.dark_mode')
+                ? 'Enabled'
+                : 'Disabled',
+
+            'FEATURE_ANALYTICS' =>
+            config('custom.features.analytics')
+                ? 'Enabled'
+                : 'Disabled',
+
+            'FEATURE_CHAT' =>
+            config('custom.features.chat')
+                ? 'Enabled'
+                : 'Disabled',
+
+            'MAINTENANCE_MODE' =>
+            config('custom.maintenance.enabled')
+                ? 'Enabled'
+                : 'Disabled',
+
+            'APP_THEME_COLOR' => config(
+                'custom.theme.color'
+            ),
+
+            'APP_THEME_NAME' => config(
+                'custom.theme.name'
+            ),
+        ];
     }
 
     /**
